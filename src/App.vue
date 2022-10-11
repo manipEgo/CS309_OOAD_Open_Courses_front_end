@@ -1,17 +1,92 @@
 <template>
     <div>
-        <AddPanel/>
-        <button>Add</button>
+        <template>
+            <div class="AddPanel">
+                <div>
+                    <label id="input-name">Course Name:<br/>
+                        <input type="text" name="cname" placeholder="Course Name" v-model="cname"/>
+                    </label>
+                </div>
+                <div>
+                    <label id="input-code">Course Code:<br/>
+                        <input type="text" name="code" placeholder="Course Code" v-model="code"/>
+                    </label>
+                </div>
+                <div>
+                    <label id="input-language">Language:<br/>
+                        <select v-model="language">
+                            <option value="Chinese">Chinese</option>
+                            <option value="English">English</option>
+                            <option value="Bilingual">Bilingual</option>
+                        </select>
+                    </label>
+                </div>
+                <div>
+                    <label id="input-teacher">Teacher:<br/>
+                        <input type="text" name="teacher" placeholder="Teacher" v-model="teacher"/>
+                    </label>
+                </div>
+                <div>
+                    <label id="input-date">Date:<br/>
+                        <input type="date" name="date" id="date-value" v-model="cdate"/>
+                    </label>
+                </div>
+                <div>
+                    <label id="input-time">Time:<br/>
+                        <input type="time" name="time" v-model="time"/>
+                    </label>
+                </div>
+                <div>
+                    <label id="input-location">Location:<br/>
+                        <select v-model="slocation">
+                            <option value="Teaching Building No.1 Lecture Hall">Teaching Building No.1 Lecture Hall</option>
+                            <option value="Research Building Lecture Hall">Research Building Lecture Hall</option>
+                            <option value="Library Conference Hall">Library Conference Hall</option>
+                            <option value="Activity Room">Activity Room</option>
+                        </select>
+                    </label>
+                </div>
+                <div>
+                    <label id="input-duration">Duration:<br/>
+                        <input type="number" name="duration" value=2 min=1 max=4 step=0.5 v-model="duration"/>
+                    </label>
+                </div>
+                <div>
+                    <button @click="addRow()">Add</button>
+                </div>
+            </div>
+        </template>
         <ve-table :columns="columns" :table-data="tableData" />
     </div>
 </template>
 
 <script>
-import AddPanel from "@/components/AddPanel";
+let date = new Date()
+let yyyy = date.getFullYear()
+let MM = (date.getMonth() + 1) < 10 ? ("0" + (date.getMonth() + 1)) : (date.getMonth() + 1)
+let dd = date.getDate() < 10 ? ("0" + date.getDate()) : date.getDate()
+
+let curDay = yyyy + '-' + MM + '-' + dd;
+// eslint-disable-next-line no-unused-vars
+document.addEventListener("DOMContentLoaded", (event) => {
+    const date_form = document.getElementById("date-value")
+    date_form.setAttribute("value", curDay)
+    date_form.setAttribute("min", curDay)
+    console.log(date_form)
+});
+
 export default {
-    components: {AddPanel},
+    //components: {AddPanel},
     data() {
         return {
+            cname: "",
+            code: "",
+            language: "Chinese",
+            teacher: "",
+            cdate: curDay,
+            time: "",
+            slocation: "Activity Room",
+            duration: 2,
             columns: [
                 { field: "name", key: "a", title: "Course Name", align: "center" },
                 { field: "code", key: "b", title: "Course Code", align: "center" },
@@ -73,6 +148,42 @@ export default {
         deleteRow(rowIndex) {
             this.tableData.splice(rowIndex, 1);
         },
+        addRow() {
+            if (this.cname.match("^[A-Za-z]+$") == null) {
+                alert(this.cname + "Course Name must be letters!")
+                return
+            }
+            if (this.teacher.match("^[A-Za-z]+$") == null) {
+                alert(this.teacher + "Teacher Name must be letters!")
+                return
+            }
+            this.tableData.push(
+                    {
+                        name: this.cname,
+                        code: this.code,
+                        language: this.language,
+                        teacher: this.teacher,
+                        date: this.cdate,
+                        time: this.time,
+                        location: this.slocation,
+                        duration: this.duration
+                    }
+            )
+        }
     },
 };
 </script>
+
+
+<style>
+.AddPanel {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+}
+.AddPanel > div {
+    height: 50px;
+    flex: 1;
+}
+</style>
