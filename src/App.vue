@@ -56,7 +56,7 @@
         </template>
         <ve-table :columns="columns" :table-data="tableData" />
         <template>
-            <div id="layer" v-show="editFlag">
+            <div class="EditPanel" v-show="editFlag">
                 <div class="mask">
                     <div class="title">
                         Edit Panel
@@ -65,39 +65,39 @@
                     <div class="content">
                         <div>
                             <label id="input-name">Course Name:<br/>
-                                <input type="text" name="cname" placeholder="Course Name" v-model="addProps.cname"/>
+                                <input type="text" name="cname" placeholder="Course Name" v-model="editProps.cname"/>
                             </label>
                         </div>
                         <div>
                             <label id="input-code">Course Code:<br/>
-                                <input type="text" name="code" placeholder="Course Code" v-model="addProps.code"/>
+                                <input type="text" name="code" placeholder="Course Code" v-model="editProps.code"/>
                             </label>
                         </div>
                         <div>
                             <label id="input-language">Language:<br/>
-                                <input type="radio" value="Chinese" v-model="addProps.language"/>Chinese<br/>
-                                <input type="radio" value="English" v-model="addProps.language"/>English<br/>
-                                <input type="radio" value="Bilingual" v-model="addProps.language"/>Bilingual<br/>
+                                <input type="radio" value="Chinese" v-model="editProps.language"/>Chinese<br/>
+                                <input type="radio" value="English" v-model="editProps.language"/>English<br/>
+                                <input type="radio" value="Bilingual" v-model="editProps.language"/>Bilingual<br/>
                             </label>
                         </div>
                         <div>
                             <label id="input-teacher">Teacher:<br/>
-                                <input type="text" name="teacher" placeholder="Teacher" v-model="addProps.teacher"/>
+                                <input type="text" name="teacher" placeholder="Teacher" v-model="editProps.teacher"/>
                             </label>
                         </div>
                         <div>
                             <label id="input-date">Date:<br/>
-                                <input type="date" name="date" id="date-value" v-model="addProps.cdate"/>
+                                <input type="date" name="date" id="date-value" v-model="editProps.cdate"/>
                             </label>
                         </div>
                         <div>
                             <label id="input-time">Time:<br/>
-                                <input type="time" name="time" v-model="addProps.time"/>
+                                <input type="time" name="time" v-model="editProps.time"/>
                             </label>
                         </div>
                         <div>
                             <label id="input-location">Location:<br/>
-                                <select v-model="addProps.slocation">
+                                <select v-model="editProps.slocation">
                                     <option value="Teaching Building No.1 Lecture Hall">Teaching Building No.1 Lecture Hall</option>
                                     <option value="Research Building Lecture Hall">Research Building Lecture Hall</option>
                                     <option value="Library Conference Hall">Library Conference Hall</option>
@@ -107,7 +107,7 @@
                         </div>
                         <div>
                             <label id="input-duration">Duration:<br/>
-                                <input type="number" name="duration" value=2 min=1 max=4 step=0.5 v-model="addProps.duration"/>
+                                <input type="number" name="duration" value=2 min=1 max=4 step=0.5 v-model="editProps.duration"/>
                             </label>
                         </div>
                         <div>
@@ -137,12 +137,21 @@ document.addEventListener("DOMContentLoaded", (event) => {
 });
 
 export default {
-    //components: {AddPanel},
     data() {
         return {
             editFlag: false,
             editIndex: 0,
             addProps: {
+                cname: "",
+                code: "",
+                language: "Chinese",
+                teacher: "",
+                cdate: curDay,
+                time: "00:00",
+                slocation: "Activity Room",
+                duration: 2,
+            },
+            editProps: {
                 cname: "",
                 code: "",
                 language: "Chinese",
@@ -209,9 +218,28 @@ export default {
     methods: {
         editRow(rowIndex) {
             this.editIndex = rowIndex
+
+            this.editProps.cname = this.tableData[rowIndex].name
+            this.editProps.code = this.tableData[rowIndex].code
+            this.editProps.language = this.tableData[rowIndex].language
+            this.editProps.teacher = this.tableData[rowIndex].teacher
+            this.editProps.cdate = this.tableData[rowIndex].date.replaceAll('/', '-')
+            this.editProps.time = this.tableData[rowIndex].time
+            this.editProps.slocation = this.tableData[rowIndex].location
+            this.editProps.duration = this.tableData[rowIndex].duration
+
             this.editFlag = true
         },
         editRowComplete() {
+            this.tableData[this.editIndex].name = this.editProps.cname
+            this.tableData[this.editIndex].code = this.editProps.code
+            this.tableData[this.editIndex].language = this.editProps.language
+            this.tableData[this.editIndex].teacher = this.editProps.teacher
+            this.tableData[this.editIndex].date = this.editProps.cdate.replaceAll('-', '/')
+            this.tableData[this.editIndex].time = this.editProps.time
+            this.tableData[this.editIndex].location = this.editProps.slocation
+            this.tableData[this.editIndex].duration = this.editProps.duration
+
             this.editFlag = false
         },
         editRowCancel() {
