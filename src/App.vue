@@ -1,50 +1,78 @@
 <template>
-    <ve-table :columns="columns" :table-data="tableData" />
+    <div>
+        <AddPanel/>
+        <button>Add</button>
+        <ve-table :columns="columns" :table-data="tableData" />
+    </div>
 </template>
 
 <script>
+import AddPanel from "@/components/AddPanel";
 export default {
+    components: {AddPanel},
     data() {
         return {
             columns: [
-                { field: "name", key: "a", title: "Name", align: "center" },
-                { field: "date", key: "b", title: "Date", align: "left" },
-                { field: "hobby", key: "c", title: "Hobby", align: "right" },
-                { field: "address", key: "d", title: "Address" },
+                { field: "name", key: "a", title: "Course Name", align: "center" },
+                { field: "code", key: "b", title: "Course Code", align: "center" },
+                { field: "language", key: "c", title: "Language", align: "center" },
+                { field: "teacher", key: "d", title: "Teacher", align: "center"},
+                { field: "date", key: "e", title: "Date", align: "center"},
+                { field: "time", key: "f", title: "Time", align: "center"},
+                { field: "location", key: "g", title: "Location", align: "center"},
+                { field: "duration", key: "h", title: "Duration", align: "center"},
+                // eslint-disable-next-line no-unused-vars
+                { field: "", key: "i", title: "Operation", align: "center", renderBodyCell: ({ row, column, rowIndex }, h) => {
+                        return (
+                                <span>
+                                    <button
+                                            class="button-operation"
+                                            on-click={() => this.editRow(rowIndex)}
+                                    >
+                                        Edit
+                                    </button>
+                                    &nbsp;
+                                    <button
+                                            class="button-operation"
+                                            on-click={() => this.deleteRow(rowIndex)}
+                                    >
+                                        Delete
+                                    </button>
+                                </span>
+                        );}
+                }
             ],
             tableData: [
                 {
-                    name: "John",
-                    date: "1900-05-20",
-                    hobby: "coding and coding repeat",
-                    address: "No.1 Century Avenue, Shanghai",
+                    name: "OOAD",
+                    code: "CS309",
+                    language: "English",
+                    teacher: "XXX",
+                    date: "2022-09-30",
+                    time: "19:00",
+                    location: "Activity Room",
+                    duration: 3.0
                 },
                 {
-                    name: "Dickerson",
-                    date: "1910-06-20",
-                    hobby: "coding and coding repeat",
-                    address: "No.1 Century Avenue, Beijing",
-                },
-                {
-                    name: "Larsen",
-                    date: "2000-07-20",
-                    hobby: "coding and coding repeat",
-                    address: "No.1 Century Avenue, Chongqing",
-                },
-                {
-                    name: "Geneva",
-                    date: "2010-08-20",
-                    hobby: "coding and coding repeat",
-                    address: "No.1 Century Avenue, Xiamen",
-                },
-                {
-                    name: "Jami",
-                    date: "2020-09-20",
-                    hobby: "coding and coding repeat",
-                    address: "No.1 Century Avenue, Shenzhen",
-                },
+                    name: "How to Study CS",
+                    code: "CS666",
+                    language: "Bilingual",
+                    teacher: "XXX",
+                    date: "2022-09-29",
+                    time: "16:20",
+                    location: "Research Building Lecture Hall",
+                    duration: 2.5
+                }
             ],
         };
+    },
+    methods: {
+        editRow(rowIndex) {
+            alert(`eidt row number:${rowIndex}`);
+        },
+        deleteRow(rowIndex) {
+            this.tableData.splice(rowIndex, 1);
+        },
     },
 };
 </script>
