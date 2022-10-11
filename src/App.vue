@@ -14,11 +14,9 @@
                 </div>
                 <div>
                     <label id="input-language">Language:<br/>
-                        <select v-model="language">
-                            <option value="Chinese">Chinese</option>
-                            <option value="English">English</option>
-                            <option value="Bilingual">Bilingual</option>
-                        </select>
+                        <input type="radio" value="Chinese" v-model="language"/>Chinese<br/>
+                        <input type="radio" value="English" v-model="language"/>English<br/>
+                        <input type="radio" value="Bilingual" v-model="language"/>Bilingual<br/>
                     </label>
                 </div>
                 <div>
@@ -84,7 +82,7 @@ export default {
             language: "Chinese",
             teacher: "",
             cdate: curDay,
-            time: "",
+            time: "00:00",
             slocation: "Activity Room",
             duration: 2,
             columns: [
@@ -123,7 +121,7 @@ export default {
                     code: "CS309",
                     language: "English",
                     teacher: "XXX",
-                    date: "2022-09-30",
+                    date: "2022/09/30",
                     time: "19:00",
                     location: "Activity Room",
                     duration: 3.0
@@ -133,7 +131,7 @@ export default {
                     code: "CS666",
                     language: "Bilingual",
                     teacher: "XXX",
-                    date: "2022-09-29",
+                    date: "2022/09/29",
                     time: "16:20",
                     location: "Research Building Lecture Hall",
                     duration: 2.5
@@ -143,19 +141,62 @@ export default {
     },
     methods: {
         editRow(rowIndex) {
-            alert(`eidt row number:${rowIndex}`);
+            alert(`edit row number:${rowIndex}`);
         },
         deleteRow(rowIndex) {
             this.tableData.splice(rowIndex, 1);
         },
         addRow() {
+            if (this.cdate.length !== 10) {
+                alert("Date must not be empty!")
+                return
+            }
+            if (this.time.length !== 5) {
+                alert("Time must not be empty!")
+                return
+            }
+            if (this.duration.length === 0) {
+                alert("Duration must not be empty!")
+                return
+            }
             if (this.cname.match("^[A-Za-z]+$") == null) {
-                alert(this.cname + "Course Name must be letters!")
+                alert("Course Name must be nonempty letters!")
+                return
+            }
+            if (this.code.match("^[A-Za-z0-9]+$") == null) {
+                alert("Course Code must be nonempty combination of letters & numbers")
                 return
             }
             if (this.teacher.match("^[A-Za-z]+$") == null) {
-                alert(this.teacher + "Teacher Name must be letters!")
+                alert("Teacher Name must be nonempty letters!")
                 return
+            }
+            const newDate = new Date(this.cdate + ' ' + this.time)
+            const newStart = newDate.getTime()
+            const newEnd = new Date(new Date(newDate).setHours(newDate.getHours() + this.duration)).getTime()
+            for (let i = 0; i < this.tableData.length; i++) {
+                if (this.tableData[i].teacher === this.teacher) {
+                    alert("Teacher overworking!")
+                    return
+                }
+                if (this.tableData[i].name === this.cname) {
+                    alert("Student overworking!")
+                    return
+                }
+                if (this.tableData[i].code === this.code) {
+                    alert("Inconsistent Course Name & Course Code!")
+                    return
+                }
+                if (this.tableData[i].location !== this.slocation) {
+                    continue
+                }
+                const oldDate = new Date(this.tableData[i].date + ' ' + this.tableData[i].time)
+                const oldStart = oldDate.getTime()
+                const oldEnd = new Date(new Date(oldDate).setHours(oldDate.getHours() + this.tableData[i].duration)).getTime()
+                if (!(newEnd <= oldStart || newStart >= oldEnd)) {
+                    alert("Classroom occupation overlaps!")
+                    return
+                }
             }
             this.tableData.push(
                     {
@@ -163,7 +204,7 @@ export default {
                         code: this.code,
                         language: this.language,
                         teacher: this.teacher,
-                        date: this.cdate,
+                        date: this.cdate.replaceAll('-', '/'),
                         time: this.time,
                         location: this.slocation,
                         duration: this.duration
@@ -178,12 +219,12 @@ export default {
 <style>
 .AddPanel {
     width: 100%;
-    height: 50px;
+    height: 150px;
     display: flex;
     flex-direction: row;
 }
 .AddPanel > div {
-    height: 50px;
+    height: 150px;
     flex: 1;
 }
 </style>
