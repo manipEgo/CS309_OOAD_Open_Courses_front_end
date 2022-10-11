@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="main">
         <template>
             <div class="AddPanel">
                 <div>
@@ -50,17 +50,17 @@
                     </label>
                 </div>
                 <div>
-                    <button @click="addRow()">Add</button>
+                    <button class="btn btn-primary" @click="addRow()">Add</button>
                 </div>
             </div>
         </template>
-        <ve-table :columns="columns" :table-data="tableData" />
+        <ve-table class="table" style="border-radius:10px; width:90%" :columns="columns" :table-data="tableData" :fixed-header="false" :row-style-option="{stripe: true}"/>
         <template>
             <div class="EditPanel" v-show="editFlag">
                 <div class="mask">
                     <div class="title">
                         Edit Panel
-                        <span @click="editFlag=false">x</span>
+                        <span class="close" @click="editFlag=false">x</span>
                     </div>
                     <div class="content">
                         <div>
@@ -111,8 +111,9 @@
                             </label>
                         </div>
                         <div>
-                            <button @click="editRowComplete()">Edit</button>
-                            <button @click="editRowCancel()">Cancel</button>
+                            <button class="btn btn-primary" @click="editRowComplete()">Edit</button>
+                            &nbsp;
+                            <button class="btn btn-primary" @click="editRowCancel()">Cancel</button>
                         </div>
                     </div>
                 </div>
@@ -175,14 +176,14 @@ export default {
                         return (
                                 <span>
                                     <button
-                                            class="button-operation"
+                                            class="btn btn-primary"
                                             on-click={() => this.editRow(rowIndex)}
                                     >
                                         Edit
                                     </button>
                                     &nbsp;
                                     <button
-                                            class="button-operation"
+                                            class="btn btn-primary"
                                             on-click={() => this.deleteRow(rowIndex)}
                                     >
                                         Delete
@@ -327,6 +328,21 @@ export default {
 
 
 <style>
+.main {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.table {
+    position: fixed;
+    width: 100%;
+    left: 5%;
+}
+
 .AddPanel {
     width: 100%;
     height: 150px;
@@ -336,5 +352,48 @@ export default {
 .AddPanel > div {
     height: 150px;
     flex: 1;
+}
+
+.EditPanel {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.EditPanel .mask {
+    width: 404px;
+    height: 512px;
+    background-color: #fff;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    box-sizing: border-box;
+    border-radius: 6px;
+    padding: 1em;
+}
+
+.EditPanel .mask .title {
+    font-size: large;
+    text-align-all: center;
+}
+
+.EditPanel .mask .title .close {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    position: absolute;
+    right: -10px;
+    top: -10px;
+    border: 2px solid #fff;
+    cursor: pointer;
+    background-color: #008c8c;
+    text-align: center;
+    line-height: 22px;
 }
 </style>
