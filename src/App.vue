@@ -4,39 +4,39 @@
             <div class="AddPanel">
                 <div>
                     <label id="input-name">Course Name:<br/>
-                        <input type="text" name="cname" placeholder="Course Name" v-model="cname"/>
+                        <input type="text" name="cname" placeholder="Course Name" v-model="addProps.cname"/>
                     </label>
                 </div>
                 <div>
                     <label id="input-code">Course Code:<br/>
-                        <input type="text" name="code" placeholder="Course Code" v-model="code"/>
+                        <input type="text" name="code" placeholder="Course Code" v-model="addProps.code"/>
                     </label>
                 </div>
                 <div>
                     <label id="input-language">Language:<br/>
-                        <input type="radio" value="Chinese" v-model="language"/>Chinese<br/>
-                        <input type="radio" value="English" v-model="language"/>English<br/>
-                        <input type="radio" value="Bilingual" v-model="language"/>Bilingual<br/>
+                        <input type="radio" value="Chinese" v-model="addProps.language"/>Chinese<br/>
+                        <input type="radio" value="English" v-model="addProps.language"/>English<br/>
+                        <input type="radio" value="Bilingual" v-model="addProps.language"/>Bilingual<br/>
                     </label>
                 </div>
                 <div>
                     <label id="input-teacher">Teacher:<br/>
-                        <input type="text" name="teacher" placeholder="Teacher" v-model="teacher"/>
+                        <input type="text" name="teacher" placeholder="Teacher" v-model="addProps.teacher"/>
                     </label>
                 </div>
                 <div>
                     <label id="input-date">Date:<br/>
-                        <input type="date" name="date" id="date-value" v-model="cdate"/>
+                        <input type="date" name="date" id="date-value" v-model="addProps.cdate"/>
                     </label>
                 </div>
                 <div>
                     <label id="input-time">Time:<br/>
-                        <input type="time" name="time" v-model="time"/>
+                        <input type="time" name="time" v-model="addProps.time"/>
                     </label>
                 </div>
                 <div>
                     <label id="input-location">Location:<br/>
-                        <select v-model="slocation">
+                        <select v-model="addProps.slocation">
                             <option value="Teaching Building No.1 Lecture Hall">Teaching Building No.1 Lecture Hall</option>
                             <option value="Research Building Lecture Hall">Research Building Lecture Hall</option>
                             <option value="Library Conference Hall">Library Conference Hall</option>
@@ -46,7 +46,7 @@
                 </div>
                 <div>
                     <label id="input-duration">Duration:<br/>
-                        <input type="number" name="duration" value=2 min=1 max=4 step=0.5 v-model="duration"/>
+                        <input type="number" name="duration" value=2 min=1 max=4 step=0.5 v-model="addProps.duration"/>
                     </label>
                 </div>
                 <div>
@@ -55,6 +55,69 @@
             </div>
         </template>
         <ve-table :columns="columns" :table-data="tableData" />
+        <template>
+            <div id="layer" v-show="editFlag">
+                <div class="mask">
+                    <div class="title">
+                        Edit Panel
+                        <span @click="editFlag=false">x</span>
+                    </div>
+                    <div class="content">
+                        <div>
+                            <label id="input-name">Course Name:<br/>
+                                <input type="text" name="cname" placeholder="Course Name" v-model="addProps.cname"/>
+                            </label>
+                        </div>
+                        <div>
+                            <label id="input-code">Course Code:<br/>
+                                <input type="text" name="code" placeholder="Course Code" v-model="addProps.code"/>
+                            </label>
+                        </div>
+                        <div>
+                            <label id="input-language">Language:<br/>
+                                <input type="radio" value="Chinese" v-model="addProps.language"/>Chinese<br/>
+                                <input type="radio" value="English" v-model="addProps.language"/>English<br/>
+                                <input type="radio" value="Bilingual" v-model="addProps.language"/>Bilingual<br/>
+                            </label>
+                        </div>
+                        <div>
+                            <label id="input-teacher">Teacher:<br/>
+                                <input type="text" name="teacher" placeholder="Teacher" v-model="addProps.teacher"/>
+                            </label>
+                        </div>
+                        <div>
+                            <label id="input-date">Date:<br/>
+                                <input type="date" name="date" id="date-value" v-model="addProps.cdate"/>
+                            </label>
+                        </div>
+                        <div>
+                            <label id="input-time">Time:<br/>
+                                <input type="time" name="time" v-model="addProps.time"/>
+                            </label>
+                        </div>
+                        <div>
+                            <label id="input-location">Location:<br/>
+                                <select v-model="addProps.slocation">
+                                    <option value="Teaching Building No.1 Lecture Hall">Teaching Building No.1 Lecture Hall</option>
+                                    <option value="Research Building Lecture Hall">Research Building Lecture Hall</option>
+                                    <option value="Library Conference Hall">Library Conference Hall</option>
+                                    <option value="Activity Room">Activity Room</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div>
+                            <label id="input-duration">Duration:<br/>
+                                <input type="number" name="duration" value=2 min=1 max=4 step=0.5 v-model="addProps.duration"/>
+                            </label>
+                        </div>
+                        <div>
+                            <button @click="editRowComplete()">Edit</button>
+                            <button @click="editRowCancel()">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
     </div>
 </template>
 
@@ -77,14 +140,18 @@ export default {
     //components: {AddPanel},
     data() {
         return {
-            cname: "",
-            code: "",
-            language: "Chinese",
-            teacher: "",
-            cdate: curDay,
-            time: "00:00",
-            slocation: "Activity Room",
-            duration: 2,
+            editFlag: false,
+            editIndex: 0,
+            addProps: {
+                cname: "",
+                code: "",
+                language: "Chinese",
+                teacher: "",
+                cdate: curDay,
+                time: "00:00",
+                slocation: "Activity Room",
+                duration: 2,
+            },
             columns: [
                 { field: "name", key: "a", title: "Course Name", align: "center" },
                 { field: "code", key: "b", title: "Course Code", align: "center" },
@@ -141,53 +208,60 @@ export default {
     },
     methods: {
         editRow(rowIndex) {
-            alert(`edit row number:${rowIndex}`);
+            this.editIndex = rowIndex
+            this.editFlag = true
+        },
+        editRowComplete() {
+            this.editFlag = false
+        },
+        editRowCancel() {
+          this.editFlag = false
         },
         deleteRow(rowIndex) {
-            this.tableData.splice(rowIndex, 1);
+            this.tableData.splice(rowIndex, 1)
         },
         addRow() {
-            if (this.cdate.length !== 10) {
+            if ( this.addProps.cdate.length !== 10) {
                 alert("Date must not be empty!")
                 return
             }
-            if (this.time.length !== 5) {
+            if ( this.addProps.time.length !== 5) {
                 alert("Time must not be empty!")
                 return
             }
-            if (this.duration.length === 0) {
+            if ( this.addProps.duration.length === 0) {
                 alert("Duration must not be empty!")
                 return
             }
-            if (this.cname.match("^[A-Za-z]+$") == null) {
+            if ( this.addProps.cname.match("^[A-Za-z]+$") == null) {
                 alert("Course Name must be nonempty letters!")
                 return
             }
-            if (this.code.match("^[A-Za-z0-9]+$") == null) {
+            if ( this.addProps.code.match("^[A-Za-z0-9]+$") == null) {
                 alert("Course Code must be nonempty combination of letters & numbers")
                 return
             }
-            if (this.teacher.match("^[A-Za-z]+$") == null) {
+            if ( this.addProps.teacher.match("^[A-Za-z]+$") == null) {
                 alert("Teacher Name must be nonempty letters!")
                 return
             }
-            const newDate = new Date(this.cdate + ' ' + this.time)
+            const newDate = new Date( this.addProps.cdate + ' ' +  this.addProps.time)
             const newStart = newDate.getTime()
-            const newEnd = new Date(new Date(newDate).setHours(newDate.getHours() + this.duration)).getTime()
+            const newEnd = new Date(new Date(newDate).setHours(newDate.getHours() +  this.addProps.duration)).getTime()
             for (let i = 0; i < this.tableData.length; i++) {
-                if (this.tableData[i].teacher === this.teacher) {
+                if (this.tableData[i].teacher ===  this.addProps.teacher) {
                     alert("Teacher overworking!")
                     return
                 }
-                if (this.tableData[i].name === this.cname) {
+                if (this.tableData[i].name ===  this.addProps.cname) {
                     alert("Student overworking!")
                     return
                 }
-                if (this.tableData[i].code === this.code) {
+                if (this.tableData[i].code ===  this.addProps.code) {
                     alert("Inconsistent Course Name & Course Code!")
                     return
                 }
-                if (this.tableData[i].location !== this.slocation) {
+                if (this.tableData[i].location !==  this.addProps.slocation) {
                     continue
                 }
                 const oldDate = new Date(this.tableData[i].date + ' ' + this.tableData[i].time)
@@ -200,16 +274,24 @@ export default {
             }
             this.tableData.push(
                     {
-                        name: this.cname,
-                        code: this.code,
-                        language: this.language,
-                        teacher: this.teacher,
-                        date: this.cdate.replaceAll('-', '/'),
-                        time: this.time,
-                        location: this.slocation,
-                        duration: this.duration
+                        name:  this.addProps.cname,
+                        code:  this.addProps.code,
+                        language:  this.addProps.language,
+                        teacher:  this.addProps.teacher,
+                        date:  this.addProps.cdate.replaceAll('-', '/'),
+                        time:  this.addProps.time,
+                        location:  this.addProps.slocation,
+                        duration:  this.addProps.duration
                     }
             )
+             this.addProps.cname = ""
+             this.addProps.code = ""
+             this.addProps.language = "Chinese"
+             this.addProps.teacher = ""
+             this.addProps.cdate = curDay
+             this.addProps.time = "00:00"
+             this.addProps.slocation = "Activity Room"
+             this.addProps.duration = 2
         }
     },
 };

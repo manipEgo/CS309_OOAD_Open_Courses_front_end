@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
-import 'vue-easytable/libs/theme-dark/index.css'
+import 'vue-easytable/libs/theme-default/index.css'
 import VueEasytable from 'vue-easytable'
 
 Vue.use(VueEasytable)
