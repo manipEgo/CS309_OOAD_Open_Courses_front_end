@@ -20,14 +20,15 @@
             </div>
         </div>
         <template>
-            <div class="EditPanel" v-show="addFlag">
-                <div class="mask">
-                    <div class="title">
-                        Add Panel
-                        <span class="close" @click="addFlag=false">x</span>
-                    </div>
-                    <div class="content">
-                        <form role="form">
+            <transition name="fade">
+                <div class="EditPanel" v-show="addFlag">
+                    <div class="mask">
+                        <div class="title">
+                            Add Panel
+                            <span class="close" @click="addFlag=false">x</span>
+                        </div>
+                        <div class="content">
+                            <form role="form">
                                 <div class="form-group">
                                     <label id="input-name">Course Name:<br/>
                                         <input class="form-control" type="text" name="cname" placeholder="Course Name" v-model="addProps.cname"/>
@@ -81,85 +82,88 @@
                                     </label>
                                 </div>
                             </form>
-                    </div>
-                    <div class="footer">
-                        <button class="btn btn-primary" @click="addRow()">Add</button>
-                        &nbsp;
-                        <button class="btn btn-primary" @click="addFlag=false">Cancel</button>
+                        </div>
+                        <div class="footer">
+                            <button class="btn btn-primary" @click="addRow()">Add</button>
+                            &nbsp;
+                            <button class="btn btn-primary" @click="addFlag=false">Cancel</button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </transition>
         </template>
         <template>
-            <div class="EditPanel" v-show="editFlag">
-                <div class="mask">
-                    <div class="title">
-                        Edit Panel
-                        <span class="close" @click="editFlag=false">x</span>
-                    </div>
-                    <div class="content">
-                        <form role="form">
-                            <div class="form-group">
-                                <label id="input-name">Course Name:<br/>
-                                    <input class="form-control" type="text" name="cname" placeholder="Course Name" v-model="editProps.cname"/>
-                                </label>
-                            </div>
-                            <div class="form-group">
-                                <label id="input-code">Course Code:<br/>
-                                    <input class="form-control" type="text" name="code" placeholder="Course Code" v-model="editProps.code"/>
-                                </label>
-                            </div>
-                            <div class="form-group">
-                                <label id="input-language">Language:<br/>
-                                    <div class="radio">
-                                        <label><input type="radio" value="Chinese" v-model="editProps.language"/>Chinese<br/></label>
-                                        <label><input type="radio" value="English" v-model="editProps.language"/>English<br/></label>
-                                        <label><input type="radio" value="Bilingual" v-model="editProps.language"/>Bilingual<br/></label>
-                                    </div>
-                                </label>
-                            </div>
-                            <div class="form-group">
-                                <label id="input-teacher">Teacher:<br/>
-                                    <input class="form-control" type="text" name="teacher" placeholder="Teacher" v-model="editProps.teacher"/>
-                                </label>
-                            </div>
-                            <div class="form-group">
-                                <label id="input-date">Date:<br/>
-                                    <input class="form-control" type="date" name="date" id="date-value" v-model="editProps.cdate"/>
-                                </label>
-                                &nbsp;
-                                <label id="input-time">Time:<br/>
-                                    <input class="form-control" type="time" name="time" v-model="editProps.time"/>
-                                </label>
-                                &nbsp;
-                                <label id="input-duration">Duration:<br/>
-                                    <div class="input-group duration1">
-                                        <input class="form-control" type="number" name="duration" value=2 min=1 max=4 step=0.5 v-model="editProps.duration"/>
-                                        <div class="input-group-append">
-                                            <span class="input-group-text">hour(s)</span>
+            <transition name="fade">
+                <div class="EditPanel" v-show="editFlag">
+                    <div class="mask">
+                        <div class="title">
+                            Edit Panel
+                            <span class="close" @click="editFlag=false">x</span>
+                        </div>
+                        <div class="content">
+                            <form role="form">
+                                <div class="form-group">
+                                    <label id="input-name">Course Name:<br/>
+                                        <input class="form-control" type="text" name="cname" placeholder="Course Name" v-model="editProps.cname"/>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label id="input-code">Course Code:<br/>
+                                        <input class="form-control" type="text" name="code" placeholder="Course Code" v-model="editProps.code"/>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label id="input-language">Language:<br/>
+                                        <div class="radio">
+                                            <label><input type="radio" value="Chinese" v-model="editProps.language"/>Chinese<br/></label>
+                                            <label><input type="radio" value="English" v-model="editProps.language"/>English<br/></label>
+                                            <label><input type="radio" value="Bilingual" v-model="editProps.language"/>Bilingual<br/></label>
                                         </div>
-                                    </div>
-                                </label>
-                            </div>
-                            <div class="form-group">
-                                <label id="input-location">Location:<br/>
-                                    <select class="form-control" v-model="editProps.slocation">
-                                        <option value="Teaching Building No.1 Lecture Hall">Teaching Building No.1 Lecture Hall</option>
-                                        <option value="Research Building Lecture Hall">Research Building Lecture Hall</option>
-                                        <option value="Library Conference Hall">Library Conference Hall</option>
-                                        <option value="Activity Room">Activity Room</option>
-                                    </select>
-                                </label>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="footer">
-                        <button class="btn btn-primary" @click="editRowComplete()">Edit</button>
-                        &nbsp;
-                        <button class="btn btn-primary" @click="editRowCancel()">Cancel</button>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label id="input-teacher">Teacher:<br/>
+                                        <input class="form-control" type="text" name="teacher" placeholder="Teacher" v-model="editProps.teacher"/>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label id="input-date">Date:<br/>
+                                        <input class="form-control" type="date" name="date" id="date-value" v-model="editProps.cdate"/>
+                                    </label>
+                                    &nbsp;
+                                    <label id="input-time">Time:<br/>
+                                        <input class="form-control" type="time" name="time" v-model="editProps.time"/>
+                                    </label>
+                                    &nbsp;
+                                    <label id="input-duration">Duration:<br/>
+                                        <div class="input-group duration1">
+                                            <input class="form-control" type="number" name="duration" value=2 min=1 max=4 step=0.5 v-model="editProps.duration"/>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">hour(s)</span>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label id="input-location">Location:<br/>
+                                        <select class="form-control" v-model="editProps.slocation">
+                                            <option value="Teaching Building No.1 Lecture Hall">Teaching Building No.1 Lecture Hall</option>
+                                            <option value="Research Building Lecture Hall">Research Building Lecture Hall</option>
+                                            <option value="Library Conference Hall">Library Conference Hall</option>
+                                            <option value="Activity Room">Activity Room</option>
+                                        </select>
+                                    </label>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="footer">
+                            <button class="btn btn-primary" @click="editRowComplete()">Edit</button>
+                            &nbsp;
+                            <button class="btn btn-primary" @click="editRowCancel()">Cancel</button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </transition>
         </template>
     </div>
 </template>
@@ -480,5 +484,12 @@ export default {
 .EditPanel .mask .footer {
     height: 8%;
     align-self: center;
+}
+
+.fade-enter-active, .fade-leave-active {
+    transition: opacity 0.3s
+}
+.fade-enter, .fade-leave-to {
+    opacity: 0
 }
 </style>
