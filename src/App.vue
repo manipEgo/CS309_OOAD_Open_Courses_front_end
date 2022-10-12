@@ -1,60 +1,78 @@
 <template>
     <div class="main">
+        <button class="btn btn-primary" @click="addFlag=true">Add Row</button>
+        <ve-table class="table" style="border-radius:10px; width:90%" :columns="columns" :table-data="tableData" :fixed-header="false" :row-style-option="{stripe: true}"/>
         <template>
-            <div class="AddPanel">
-                <div>
-                    <label id="input-name">Course Name:<br/>
-                        <input type="text" name="cname" placeholder="Course Name" v-model="addProps.cname"/>
-                    </label>
-                </div>
-                <div>
-                    <label id="input-code">Course Code:<br/>
-                        <input type="text" name="code" placeholder="Course Code" v-model="addProps.code"/>
-                    </label>
-                </div>
-                <div>
-                    <label id="input-language">Language:<br/>
-                        <input type="radio" value="Chinese" v-model="addProps.language"/>Chinese<br/>
-                        <input type="radio" value="English" v-model="addProps.language"/>English<br/>
-                        <input type="radio" value="Bilingual" v-model="addProps.language"/>Bilingual<br/>
-                    </label>
-                </div>
-                <div>
-                    <label id="input-teacher">Teacher:<br/>
-                        <input type="text" name="teacher" placeholder="Teacher" v-model="addProps.teacher"/>
-                    </label>
-                </div>
-                <div>
-                    <label id="input-date">Date:<br/>
-                        <input type="date" name="date" id="date-value" v-model="addProps.cdate"/>
-                    </label>
-                </div>
-                <div>
-                    <label id="input-time">Time:<br/>
-                        <input type="time" name="time" v-model="addProps.time"/>
-                    </label>
-                </div>
-                <div>
-                    <label id="input-location">Location:<br/>
-                        <select v-model="addProps.slocation">
-                            <option value="Teaching Building No.1 Lecture Hall">Teaching Building No.1 Lecture Hall</option>
-                            <option value="Research Building Lecture Hall">Research Building Lecture Hall</option>
-                            <option value="Library Conference Hall">Library Conference Hall</option>
-                            <option value="Activity Room">Activity Room</option>
-                        </select>
-                    </label>
-                </div>
-                <div>
-                    <label id="input-duration">Duration:<br/>
-                        <input type="number" name="duration" value=2 min=1 max=4 step=0.5 v-model="addProps.duration"/>
-                    </label>
-                </div>
-                <div>
-                    <button class="btn btn-primary" @click="addRow()">Add</button>
+            <div class="EditPanel" v-show="addFlag">
+                <div class="mask">
+                    <div class="title">
+                        Add Panel
+                        <span class="close" @click="addFlag=false">x</span>
+                    </div>
+                    <div class="content">
+                        <form role="form">
+                                <div class="form-group">
+                                    <label id="input-name">Course Name:<br/>
+                                        <input class="form-control" type="text" name="cname" placeholder="Course Name" v-model="addProps.cname"/>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label id="input-code">Course Code:<br/>
+                                        <input class="form-control" type="text" name="code" placeholder="Course Code" v-model="addProps.code"/>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label id="input-language">Language:<br/>
+                                        <div class="radio">
+                                            <label><input type="radio" value="Chinese" v-model="addProps.language"/>Chinese<br/></label>
+                                            <label><input type="radio" value="English" v-model="addProps.language"/>English<br/></label>
+                                            <label><input type="radio" value="Bilingual" v-model="addProps.language"/>Bilingual<br/></label>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label id="input-teacher">Teacher:<br/>
+                                        <input class="form-control" type="text" name="teacher" placeholder="Teacher" v-model="addProps.teacher"/>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label id="input-date">Date:<br/>
+                                        <input class="form-control" type="date" name="date" id="date-value" v-model="addProps.cdate"/>
+                                    </label>
+                                    &nbsp;
+                                    <label id="input-time">Time:<br/>
+                                        <input class="form-control" type="time" name="time" v-model="addProps.time"/>
+                                    </label>
+                                    &nbsp;
+                                    <label id="input-duration">Duration:<br/>
+                                        <div class="input-group duration1">
+                                            <input class="form-control" type="number" name="duration" value=2 min=1 max=4 step=0.5 v-model="addProps.duration"/>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">hour(s)</span>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label id="input-location">Location:<br/>
+                                        <select class="form-control" v-model="addProps.slocation">
+                                            <option value="Teaching Building No.1 Lecture Hall">Teaching Building No.1 Lecture Hall</option>
+                                            <option value="Research Building Lecture Hall">Research Building Lecture Hall</option>
+                                            <option value="Library Conference Hall">Library Conference Hall</option>
+                                            <option value="Activity Room">Activity Room</option>
+                                        </select>
+                                    </label>
+                                </div>
+                            </form>
+                    </div>
+                    <div class="footer">
+                        <button class="btn btn-primary" @click="addRow()">Add</button>
+                        &nbsp;
+                        <button class="btn btn-primary" @click="addFlag=false">Cancel</button>
+                    </div>
                 </div>
             </div>
         </template>
-        <ve-table class="table" style="border-radius:10px; width:90%" :columns="columns" :table-data="tableData" :fixed-header="false" :row-style-option="{stripe: true}"/>
         <template>
             <div class="EditPanel" v-show="editFlag">
                 <div class="mask">
@@ -63,58 +81,65 @@
                         <span class="close" @click="editFlag=false">x</span>
                     </div>
                     <div class="content">
-                        <div>
-                            <label id="input-name">Course Name:<br/>
-                                <input type="text" name="cname" placeholder="Course Name" v-model="editProps.cname"/>
-                            </label>
-                        </div>
-                        <div>
-                            <label id="input-code">Course Code:<br/>
-                                <input type="text" name="code" placeholder="Course Code" v-model="editProps.code"/>
-                            </label>
-                        </div>
-                        <div>
-                            <label id="input-language">Language:<br/>
-                                <input type="radio" value="Chinese" v-model="editProps.language"/>Chinese<br/>
-                                <input type="radio" value="English" v-model="editProps.language"/>English<br/>
-                                <input type="radio" value="Bilingual" v-model="editProps.language"/>Bilingual<br/>
-                            </label>
-                        </div>
-                        <div>
-                            <label id="input-teacher">Teacher:<br/>
-                                <input type="text" name="teacher" placeholder="Teacher" v-model="editProps.teacher"/>
-                            </label>
-                        </div>
-                        <div>
-                            <label id="input-date">Date:<br/>
-                                <input type="date" name="date" id="date-value" v-model="editProps.cdate"/>
-                            </label>
-                        </div>
-                        <div>
-                            <label id="input-time">Time:<br/>
-                                <input type="time" name="time" v-model="editProps.time"/>
-                            </label>
-                        </div>
-                        <div>
-                            <label id="input-location">Location:<br/>
-                                <select v-model="editProps.slocation">
-                                    <option value="Teaching Building No.1 Lecture Hall">Teaching Building No.1 Lecture Hall</option>
-                                    <option value="Research Building Lecture Hall">Research Building Lecture Hall</option>
-                                    <option value="Library Conference Hall">Library Conference Hall</option>
-                                    <option value="Activity Room">Activity Room</option>
-                                </select>
-                            </label>
-                        </div>
-                        <div>
-                            <label id="input-duration">Duration:<br/>
-                                <input type="number" name="duration" value=2 min=1 max=4 step=0.5 v-model="editProps.duration"/>
-                            </label>
-                        </div>
-                        <div>
-                            <button class="btn btn-primary" @click="editRowComplete()">Edit</button>
-                            &nbsp;
-                            <button class="btn btn-primary" @click="editRowCancel()">Cancel</button>
-                        </div>
+                        <form role="form">
+                            <div class="form-group">
+                                <label id="input-name">Course Name:<br/>
+                                    <input class="form-control" type="text" name="cname" placeholder="Course Name" v-model="editProps.cname"/>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label id="input-code">Course Code:<br/>
+                                    <input class="form-control" type="text" name="code" placeholder="Course Code" v-model="editProps.code"/>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label id="input-language">Language:<br/>
+                                    <div class="radio">
+                                        <label><input type="radio" value="Chinese" v-model="editProps.language"/>Chinese<br/></label>
+                                        <label><input type="radio" value="English" v-model="editProps.language"/>English<br/></label>
+                                        <label><input type="radio" value="Bilingual" v-model="editProps.language"/>Bilingual<br/></label>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label id="input-teacher">Teacher:<br/>
+                                    <input class="form-control" type="text" name="teacher" placeholder="Teacher" v-model="editProps.teacher"/>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label id="input-date">Date:<br/>
+                                    <input class="form-control" type="date" name="date" id="date-value" v-model="editProps.cdate"/>
+                                </label>
+                                &nbsp;
+                                <label id="input-time">Time:<br/>
+                                    <input class="form-control" type="time" name="time" v-model="editProps.time"/>
+                                </label>
+                                &nbsp;
+                                <label id="input-duration">Duration:<br/>
+                                    <div class="input-group duration1">
+                                        <input class="form-control" type="number" name="duration" value=2 min=1 max=4 step=0.5 v-model="editProps.duration"/>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">hour(s)</span>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label id="input-location">Location:<br/>
+                                    <select class="form-control" v-model="editProps.slocation">
+                                        <option value="Teaching Building No.1 Lecture Hall">Teaching Building No.1 Lecture Hall</option>
+                                        <option value="Research Building Lecture Hall">Research Building Lecture Hall</option>
+                                        <option value="Library Conference Hall">Library Conference Hall</option>
+                                        <option value="Activity Room">Activity Room</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="footer">
+                        <button class="btn btn-primary" @click="editRowComplete()">Edit</button>
+                        &nbsp;
+                        <button class="btn btn-primary" @click="editRowCancel()">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -140,6 +165,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 export default {
     data() {
         return {
+            addFlag: false,
             editFlag: false,
             editIndex: 0,
             addProps: {
@@ -170,7 +196,7 @@ export default {
                 { field: "date", key: "e", title: "Date", align: "center"},
                 { field: "time", key: "f", title: "Time", align: "center"},
                 { field: "location", key: "g", title: "Location", align: "center"},
-                { field: "duration", key: "h", title: "Duration", align: "center"},
+                { field: "duration", key: "h", title: "Duration(hours)", align: "center"},
                 // eslint-disable-next-line no-unused-vars
                 { field: "", key: "i", title: "Operation", align: "center", renderBodyCell: ({ row, column, rowIndex }, h) => {
                         return (
@@ -343,17 +369,6 @@ export default {
     left: 5%;
 }
 
-.AddPanel {
-    width: 100%;
-    height: 150px;
-    display: flex;
-    flex-direction: row;
-}
-.AddPanel > div {
-    height: 150px;
-    flex: 1;
-}
-
 .EditPanel {
     position: fixed;
     width: 100%;
@@ -364,8 +379,8 @@ export default {
 }
 
 .EditPanel .mask {
-    width: 404px;
-    height: 512px;
+    width: 40%;
+    height: 80%;
     background-color: #fff;
     position: absolute;
     left: 0;
@@ -376,11 +391,14 @@ export default {
     box-sizing: border-box;
     border-radius: 6px;
     padding: 1em;
+    display: flex;
+    flex-direction: column;
 }
 
 .EditPanel .mask .title {
-    font-size: large;
-    text-align-all: center;
+    height: 10%;
+    font-size: x-large;
+    align-self: center;
 }
 
 .EditPanel .mask .title .close {
@@ -388,12 +406,24 @@ export default {
     height: 30px;
     border-radius: 50%;
     position: absolute;
-    right: -10px;
-    top: -10px;
+    right: 10px;
+    top: 10px;
     border: 2px solid #fff;
     cursor: pointer;
-    background-color: #008c8c;
+    background-color: dimgrey;
     text-align: center;
     line-height: 22px;
+}
+
+.EditPanel .mask .content {
+    width: 90%;
+    height: 82%;
+    overflow: auto;
+    align-self: center;
+}
+
+.EditPanel .mask .footer {
+    height: 8%;
+    align-self: center;
 }
 </style>
