@@ -31,13 +31,17 @@
                             <form role="form">
                                 <div class="form-group">
                                     <label id="input-name">Course Name:<br/>
-                                        <input class="form-control" type="text" name="cname" placeholder="Course Name" v-model="addProps.cname"/>
+                                        <input class="form-control" type="text" name="cname" placeholder="Course Name" v-model="addProps.cname" @focus="courseNameError=false;studentWorkError=false"/>
                                     </label>
+                                    <div class="alert alert-danger" v-show="courseNameError">Course Name must be nonempty letters!</div>
+                                    <div class="alert alert-danger" v-show="studentWorkError">Student overworking!</div>
                                 </div>
                                 <div class="form-group">
                                     <label id="input-code">Course Code:<br/>
-                                        <input class="form-control" type="text" name="code" placeholder="Course Code" v-model="addProps.code"/>
+                                        <input class="form-control" type="text" name="code" placeholder="Course Code" v-model="addProps.code" @focus="courseCodeError=false;nameCodeError=false"/>
                                     </label>
+                                    <div class="alert alert-danger" v-show="courseCodeError">Course Code must be nonempty combination of letters & numbers!</div>
+                                    <div class="alert alert-danger" v-show="nameCodeError">Inconsistent Course Name & Course Code!</div>
                                 </div>
                                 <div class="form-group">
                                     <label id="input-language">Language:<br/>
@@ -50,35 +54,41 @@
                                 </div>
                                 <div class="form-group">
                                     <label id="input-teacher">Teacher:<br/>
-                                        <input class="form-control" type="text" name="teacher" placeholder="Teacher" v-model="addProps.teacher"/>
+                                        <input class="form-control" type="text" name="teacher" placeholder="Teacher" v-model="addProps.teacher" @focus="teacherNameError=false;teacherWorkError=false"/>
                                     </label>
+                                    <div class="alert alert-danger" v-show="teacherNameError">Teacher Name must be nonempty letters!</div>
+                                    <div class="alert alert-danger" v-show="teacherWorkError">Teacher overworking!</div>
                                 </div>
                                 <div class="form-group">
                                     <label id="input-date">Date:<br/>
-                                        <input class="form-control" type="date" name="date" id="date-value" v-model="addProps.cdate"/>
+                                        <input class="form-control" type="date" name="date" id="date-value" v-model="addProps.cdate" @focus="emptyDateError=false"/>
                                     </label>
                                     &nbsp;
                                     <label id="input-time">Time:<br/>
-                                        <input class="form-control" type="time" name="time" v-model="addProps.time"/>
+                                        <input class="form-control" type="time" name="time" v-model="addProps.time" @focus="emptyTimeError=false"/>
                                     </label>
                                     &nbsp;
                                     <label id="input-duration">Duration:<br/>
                                         <div class="input-group duration1">
-                                            <input class="form-control" type="number" name="duration" value=2 min=1 max=4 step=0.5 v-model="addProps.duration"/>
+                                            <input class="form-control" type="number" name="duration" value=2 min=1 max=4 step=0.5 v-model="addProps.duration" @focus="emptyDurationError=false"/>
                                             <div class="input-group-append">
                                                 <span class="input-group-text">hour(s)</span>
                                             </div>
                                         </div>
                                     </label>
+                                    <div class="alert alert-danger" v-show="emptyDateError">Date must not be empty!</div>
+                                    <div class="alert alert-danger" v-show="emptyTimeError">Time must not be empty!</div>
+                                    <div class="alert alert-danger" v-show="emptyDurationError">Duration must not be empty!</div>
                                 </div>
                                 <div class="form-group">
                                     <label id="input-location">Location:<br/>
-                                        <select class="form-control" v-model="addProps.slocation">
+                                        <select class="form-control" v-model="addProps.slocation" @focus="occupationError=false">
                                             <option value="Teaching Building No.1 Lecture Hall">Teaching Building No.1 Lecture Hall</option>
                                             <option value="Research Building Lecture Hall">Research Building Lecture Hall</option>
                                             <option value="Library Conference Hall">Library Conference Hall</option>
                                             <option value="Activity Room">Activity Room</option>
                                         </select>
+                                        <div class="alert alert-danger" v-show="occupationError">Classroom occupation overlaps!</div>
                                     </label>
                                 </div>
                             </form>
@@ -294,6 +304,16 @@ export default {
                     duration: 2.5
                 }
             ],
+            emptyDateError: false,
+            emptyTimeError: false,
+            emptyDurationError:false,
+            courseNameError: false,
+            courseCodeError: false,
+            teacherNameError: false,
+            teacherWorkError: false,
+            studentWorkError: false,
+            nameCodeError: false,
+            occupationError: false,
         };
     },
     methods: {
@@ -331,27 +351,33 @@ export default {
         },
         addRow() {
             if ( this.addProps.cdate.length !== 10) {
-                alert("Date must not be empty!")
+                //alert("Date must not be empty!")
+                this.emptyDateError = true
                 return
             }
             if ( this.addProps.time.length !== 5) {
-                alert("Time must not be empty!")
+                //alert("Time must not be empty!")
+                this.emptyTimeError = true
                 return
             }
             if ( this.addProps.duration.length === 0) {
-                alert("Duration must not be empty!")
+                //alert("Duration must not be empty!")
+                this.emptyDurationError = true
                 return
             }
             if ( this.addProps.cname.match("^[A-Za-z]+$") == null) {
-                alert("Course Name must be nonempty letters!")
+                //alert("Course Name must be nonempty letters!")
+                this.courseNameError = true
                 return
             }
             if ( this.addProps.code.match("^[A-Za-z0-9]+$") == null) {
-                alert("Course Code must be nonempty combination of letters & numbers")
+                //alert("Course Code must be nonempty combination of letters & numbers!")
+                this.courseCodeError = true
                 return
             }
             if ( this.addProps.teacher.match("^[A-Za-z]+$") == null) {
-                alert("Teacher Name must be nonempty letters!")
+                //alert("Teacher Name must be nonempty letters!")
+                this.teacherNameError = true
                 return
             }
             const newDate = new Date( this.addProps.cdate + ' ' +  this.addProps.time)
@@ -359,15 +385,18 @@ export default {
             const newEnd = new Date(new Date(newDate).setHours(newDate.getHours() +  this.addProps.duration)).getTime()
             for (let i = 0; i < this.tableData.length; i++) {
                 if (this.tableData[i].teacher ===  this.addProps.teacher) {
-                    alert("Teacher overworking!")
+                    //alert("Teacher overworking!")
+                    this.teacherWorkError = true
                     return
                 }
                 if (this.tableData[i].name ===  this.addProps.cname) {
-                    alert("Student overworking!")
+                    //alert("Student overworking!")
+                    this.studentWorkError = true
                     return
                 }
                 if (this.tableData[i].code ===  this.addProps.code) {
-                    alert("Inconsistent Course Name & Course Code!")
+                    //alert("Inconsistent Course Name & Course Code!")
+                    this.nameCodeError = true
                     return
                 }
                 if (this.tableData[i].location !==  this.addProps.slocation) {
@@ -377,7 +406,8 @@ export default {
                 const oldStart = oldDate.getTime()
                 const oldEnd = new Date(new Date(oldDate).setHours(oldDate.getHours() + this.tableData[i].duration)).getTime()
                 if (!(newEnd <= oldStart || newStart >= oldEnd)) {
-                    alert("Classroom occupation overlaps!")
+                    //alert("Classroom occupation overlaps!")
+                    this.occupationError = true
                     return
                 }
             }
@@ -401,7 +431,7 @@ export default {
              this.addProps.time = "00:00"
              this.addProps.slocation = "Activity Room"
              this.addProps.duration = 2
-        }
+        },
     },
 };
 </script>
