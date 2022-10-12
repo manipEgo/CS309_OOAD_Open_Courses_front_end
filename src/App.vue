@@ -1,7 +1,26 @@
 <template>
     <div class="main">
-        <button class="btn btn-primary" @click="addFlag=true">Add Row</button>
-        <ve-table class="table" style="border-radius:10px; width:90%" :columns="columns" :table-data="tableData" :fixed-header="false" :row-style-option="{stripe: true}"/>
+        <div class="container">
+            <div class="row">
+                <div class="col page-header mt-3">
+                    <h1>Open Courses</h1>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col util">
+                    <button class="btn btn-primary btn-block" @click="addFlag=true">Add Row</button>
+                </div>
+            </div>
+            <div class="row mt-1">
+                <ve-table class="table" style="border-radius:6px"
+                          :columns="columns"
+                          :table-data="tableData"
+                          :fixed-header="false"
+                          :max-height="500"
+                          :virtual-scroll-option="true"
+                          :row-style-option="{stripe: true}"/>
+            </div>
+        </div>
         <template>
             <div class="EditPanel" v-show="addFlag">
                 <div class="mask">
@@ -209,7 +228,7 @@ export default {
                                     </button>
                                     &nbsp;
                                     <button
-                                            class="btn btn-primary"
+                                            class="btn btn-danger"
                                             on-click={() => this.deleteRow(rowIndex)}
                                     >
                                         Delete
@@ -360,13 +379,17 @@ export default {
     height: 100%;
     left: 0;
     top: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    overflow: auto;
+    background-image: linear-gradient(to bottom right, #7A88FF, #7AFFAF);
+}
+
+.page-header {
+    background-color: white;
+    border-radius: 6px;
 }
 
 .table {
     position: fixed;
-    width: 100%;
-    left: 5%;
 }
 
 .EditPanel {
