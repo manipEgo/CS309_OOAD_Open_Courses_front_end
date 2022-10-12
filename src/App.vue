@@ -16,9 +16,7 @@
                           :columns="columns"
                           :table-data="tableData"
                           :fixed-header="false"
-                          :max-height="500"
-                          :virtual-scroll-option="true"
-                          :row-style-option="{stripe: true}"/>
+                          :row-style-option="rowStyleOption"/>
             </div>
         </div>
         <template>
@@ -207,6 +205,9 @@ export default {
                 slocation: "Activity Room",
                 duration: 2,
             },
+            rowStyleOption: {
+                stripe: true,
+            },
             columns: [
                 { field: "name", key: "a", title: "Course Name", align: "center" },
                 { field: "code", key: "b", title: "Course Code", align: "center" },
@@ -254,6 +255,36 @@ export default {
                     language: "Bilingual",
                     teacher: "XXX",
                     date: "2022/09/29",
+                    time: "16:20",
+                    location: "Research Building Lecture Hall",
+                    duration: 2.5
+                },
+                {
+                    name: "My Example 1",
+                    code: "CS111",
+                    language: "Bilingual",
+                    teacher: "XXX",
+                    date: "2022/09/30",
+                    time: "16:20",
+                    location: "Research Building Lecture Hall",
+                    duration: 2.5
+                },
+                {
+                    name: "My Example 2",
+                    code: "CS222",
+                    language: "Bilingual",
+                    teacher: "XXX",
+                    date: "2022/10/01",
+                    time: "16:20",
+                    location: "Research Building Lecture Hall",
+                    duration: 2.5
+                },
+                {
+                    name: "My Example 3",
+                    code: "CS333",
+                    language: "Bilingual",
+                    teacher: "XXX",
+                    date: "2022/10/02",
                     time: "16:20",
                     location: "Research Building Lecture Hall",
                     duration: 2.5
@@ -390,6 +421,7 @@ export default {
 
 .table {
     position: fixed;
+    overflow: auto;
 }
 
 .EditPanel {
