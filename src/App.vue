@@ -3,7 +3,7 @@
         <div class="container">
             <div class="row">
                 <div class="col page-header mt-3">
-                    <h1>Open Courses</h1>
+                    <h1> 📅 Open Courses</h1>
                 </div>
             </div>
             <div class="row mt-3">
